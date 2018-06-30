@@ -7,16 +7,25 @@ hyperHTML is a DOM & ECMAScript standard compliant, zero-dependency, fully cross
 This architecture and styleguide has been written for showing best practices about hyperHTML in my use cases and context, mainly in ES2015 without any transpiling step (and finally without any bundling one).
 
 I developed web applications with AngularJS for a few years. That framework served me very well and introduced me a lot of concepts used in MVC architectures.
-When I chose hyperHTML, it was natural to reproduce that kind of context.
 
+When I chose hyperHTML in early 2017, at the beginning it was natural to reproduce that kind of context, even if the paradigm was different.
 
-Be aware your mileage may vary, because the framework is very flexible: it adds enough abstraction to hide boring details and not too much bells and whistles to hide the platform.
+Be aware your mileage may vary.
+
+This is an opinionated style guide for syntax, conventions and structuring hyperHTML applications. Anyway the framework is very flexible, intending it is not too much opinionated. It adds enough abstraction to hide boring details and not too much bells and whistles to hide the platform.
+
+Before thinking there is something wrong in the framework, check the docs (RTFM) and the issues - they are a very worthy reading - and try to discover (again) the original specs (DOM) behind the framework. I need to shift my mind to be used to hyperHTML. Then you can see the beauty and the elegance of your app.
 
 ## Todos
 
-* Add a note about observe pattern (two-way bindings) using Introspected.
-* Add a note about one-flow bindings and state containers.
-* Add a note about using module, component, controller and template approach.
+* Add a note in Components about component bootstrap, state and event in the controller.
+* Add a note in Controllers about observe pattern (two-way bindings) using Introspected.
+* Add a note in Controllers about one-flow bindings and state containers.
+* Add a Component and Templates sections under Components
+* Move Services section under Component.
+* Add a note in Components about using module, component, controller and template approach.
+* Add a note in Components about hyper.Component and HyperHTMLElement explained in hypHTML docs.
+* Add a note about workway.
 
 ## Table of Contents
 
@@ -47,7 +56,7 @@ A module component is the root definition for that module that encapsulates the 
 
 ### Module theory
 
-The design in the modules maps directly to our folder structure, which keeps things maintainable and predictable. We should ideally have three high-level modules: root, component and common. The root module defines the base module that bootstraps our app, and the corresponding template. We then import our component and common modules into the root module to include our dependencies. The component and common modules then require lower-level component modules, which contain our sub-components, services, utilities and tests for each reusable feature.
+The design in the modules maps directly to our folder structure, which keeps things maintainable and predictable. We should ideally have three high-level modules: root, component and common. The root module defines the base module that bootstraps our app, and the corresponding template. We then import our component and common modules into the root module to include our dependencies. The component and common modules then require lower-level component modules, which contain our components, controllers, templates, services, utilities and tests for each reusable feature.
 
 **[Back to top](#table-of-contents)**
 
@@ -473,7 +482,8 @@ Open an issue first to discuss potential changes/additions.
 
 # Credits
 
-* [@WebReflection](//twitter.com/webreflection) for creating hyperHTML framework and many other libs.
-* [@toddmotto](//twitter.com/toddmotto) for the original styleguide  ([AngularJS styleguide](//github.com/toddmotto/angularjs-styleguide), a masterpiece) and for the great posts on AngularJS.
+* [@WebReflection](//twitter.com/webreflection) for creating hyperHTML.
+* [@toddmotto](//twitter.com/toddmotto) for the original styleguide ([AngularJS styleguide](//github.com/toddmotto/angularjs-styleguide), a masterpiece) and for the great posts on AngularJS.
+* [@john_papa](//twitter.com/john_papa) for the first styleguide ([Angular 1 Style Guide](https://github.com/johnpapa/angular-styleguide/tree/master/a1)) I read how to structure a web application.
 
 **[Back to top](#table-of-contents)**
