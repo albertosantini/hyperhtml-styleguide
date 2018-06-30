@@ -16,17 +16,6 @@ This is an opinionated style guide for syntax, conventions and structuring hyper
 
 Before thinking there is something wrong in the framework, check the docs (RTFM) and the issues - they are a very worthy reading - and try to discover (again) the original specs (DOM) behind the framework. I need to shift my mind to be used to hyperHTML. Then you can see the beauty and the elegance of your app.
 
-## Todos
-
-* Add a note in Components about component bootstrap, state and event in the controller.
-* Add a note in Controllers about observe pattern (two-way bindings) using Introspected.
-* Add a note in Controllers about one-flow bindings and state containers.
-* Add a Component and Templates sections under Components
-* Move Services section under Component.
-* Add a note in Components about using module, component, controller and template approach.
-* Add a note in Components about hyper.Component and HyperHTMLElement explained in hypHTML docs.
-* Add a note about workway.
-
 ## Table of Contents
 
 1. [Modular architecture](#modular-architecture)
@@ -39,8 +28,8 @@ Before thinking there is something wrong in the framework, check the docs (RTFM)
 1. [Components](#components)
     1. [Theory](#component-theory)
     1. [Controllers](#controllers)
-1. [Services](#services)
-    1. [Theory](#service-theory)
+    1. [Templates](#templates)
+    1. [Services](#services)
 1. [Utils](#utils)
 1. [Made with hyperHTML](#made-with-hyperhtml)
 1. [Resources](#resources)
@@ -50,7 +39,7 @@ Before thinking there is something wrong in the framework, check the docs (RTFM)
 
 # Modular architecture
 
-A module component is the root definition for that module that encapsulates the logic, templates, routing and child components.
+A module component is the root definition for that module that encapsulates the component boostrap, the logic, controller, template, services and, finally, child components.
 
 **[Back to top](#table-of-contents)**
 
@@ -62,7 +51,18 @@ The design in the modules maps directly to our folder structure, which keeps thi
 
 ### Root module
 
-A root module begins with a root component that defines the base element for the entire application.
+The root module may be loaded via script tag with type module or it may be the entry point for your preferred bundler.
+
+`<script type="module" src="app/root.module.js"></script>`
+
+```js
+// root.module.js
+import "./root.component.js";
+import "./common/common.module.js";
+import "./components/components.module.js";
+```
+
+The root component defines the base element for the entire application.
 
 ```js
 // root.component.js
@@ -81,22 +81,13 @@ RootComponent.bootstrap();
 
 ```
 
-```js
-// root.module.js
-import "./root.component.js";
-import "./common/common.module.js";
-import "./components/components.module.js";
-```
-
-The root module may be loaded via script tag with type module:
-
-`<script type="module" src="app/root.module.js"></script>`
-
 **[Back to top](#table-of-contents)**
 
 ### Component module
 
-A Component module is the container reference for all reusable components. See above how we import `ComponentsModule` and inject them into the Root module, this gives us a single place to import all components for the app. These modules we require are decoupled from all other modules and thus can be moved into any other application with ease.
+A Component module is the container reference for all reusable components. See above how we import `components.module.js` and inject them into the Root module, this gives us a single place to import all components for the app. 
+
+These modules we require are almost decoupled from all other modules and thus can be moved into any other application with ease. Eventually there is an explicit dependency between the modules, because there is not a dependency injection system. 
 
 ```js
 // components.module.js
@@ -115,7 +106,7 @@ import "./other/other.module.js";
 
 ### Common module
 
-The Common module is the container reference for all application specific components, that we don't want to use in another application. This can be things like layout, navigation and footers. See above how we import `CommonModule` and inject them into the Root module, this gives us a single place to import all common components for the app.
+The Common module is the container reference for all application specific components, that we don't want to use in another application. This can be things like layout, navigation and footers. See above how we import `common.module.js` and inject them into the Root module, this gives us a single place to import all common components for the app.
 
 ```js
 // common.module.js
@@ -193,6 +184,8 @@ File structure is extremely important, this describes a scalable and predictable
 └── index.html
 ```
 
+The rationale behind this structure is a separation based on feature (folders-by-feature) and not on file type (folder-by-type).
+
 The high level folder structure simply contains `index.html` and `app/`, a directory in which all our root, component, common and low-level modules live along with the markup and styles for each component.
 
 **[Back to top](#table-of-contents)**
@@ -201,7 +194,23 @@ The high level folder structure simply contains `index.html` and `app/`, a direc
 
 ### Component theory
 
-Components are essentially templates with a controller.
+Components are essentially templates with a controller. 
+
+The component is bootstrapped in the module file.
+
+#### Note
+
+There are different approaches how to create a `component`, described in the docs, and based on `hyper.Component` and `HyperHTMLElement`.
+
+```js
+// assets.module.js
+
+import { AssetsComponent } from "./assets.component.js";
+
+AssetsComponent.bootstrap();
+```
+
+In the component it is defined the tag used in the markup and it is created the controller instance.
 
 ```js
 // assets.component.js
@@ -222,11 +231,13 @@ export class AssetsComponent {
 }
 ```
 
+Generally speaking, the component interface contains only the `bootstrap` api, but when the component is updated from another one, there is also an `update` api, eventually passing the new state.
+
 **[Back to top](#table-of-contents)**
 
 ### Controllers
 
-Controllers should only be used alongside components, never anywhere else. If you feel you need a controller, what you really need is likely a stateless component to manage that particular piece of behaviour.
+Controllers should only be used alongside components, never anywhere else. If you feel you need a controller, what you really need is likely a stateless component to manage that particular piece of behaviour. Basically a controller contains the logic of the user actions in the template.
 
 ```js
 // asset.controller.js
@@ -261,7 +272,13 @@ export class AssetsController {
 
 ```
 
-And its template:
+So `render` and `templates` are passed by the component instance.
+
+The controller adds `events` and `state`, available in the template.
+
+**[Back to top](#table-of-contents)**
+
+### Templates
 
 ```js
 // assets.template.js
@@ -316,11 +333,13 @@ export class AssetsTemplate {
 }
 ```
 
+The css classes are embedded in the template.
+
+Notice `id="${`asset-${asset.symbol}`}" onclick="${e => events(e, asset)}"`.
+
 **[Back to top](#table-of-contents)**
 
-# Services
-
-### Service theory
+### Services 
 
 Services are essentially containers for business logic that our components shouldn't request directly.
 
@@ -428,6 +447,10 @@ AssetsService.assets = JSON.parse(localStorage.getItem(CONPA_ASSETS)) || [];
 
 ```
 
+#### Note
+
+Here, in this service, there is `workway` approach.
+
 **[Back to top](#table-of-contents)**
 
 # Utils
@@ -457,8 +480,8 @@ export class Util {
 
 # Made with hyperHTML
 
-* [Argo](//github.com/albertosantini/argo)
-* [ConPA](//github.com/albertosantini/node-conpa)
+* [Argo](//github.com/albertosantini/argo), a forex trading platform.
+* [ConPA](//github.com/albertosantini/node-conpa), an asset allocation app. 
 
 **[Back to top](#table-of-contents)**
 
