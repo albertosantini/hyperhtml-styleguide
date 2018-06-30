@@ -1,4 +1,4 @@
-# hyperHTML styleguide (Work in Progress)
+# hyperHTML styleguide
 
 *Abstraction is the price you pay for the magic.*
 
@@ -6,15 +6,15 @@ hyperHTML is a DOM & ECMAScript standard compliant, zero-dependency, fully cross
 
 This architecture and styleguide has been written for showing best practices about hyperHTML in my use cases and context, mainly in ES2015 without any transpiling step (and finally without any bundling one).
 
-I developed web applications with AngularJS for a few years. That framework served me very well and introduced me a lot of concepts used in MVC architectures.
+In the latest years I developed web applications with AngularJS. That framework served me very well and introduced me a lot of concepts used in MVC architectures.
 
 When I chose hyperHTML in early 2017, at the beginning it was natural to reproduce that kind of context, even if the paradigm was different.
 
 Be aware your mileage may vary.
 
-This is an opinionated style guide for syntax, conventions and structuring hyperHTML applications. Anyway the framework is very flexible, intending it is not too much opinionated. It adds enough abstraction to hide boring details and not too much bells and whistles to hide the platform.
+This is an opinionated styleguide for syntax, conventions and structuring hyperHTML applications. Anyway the framework is very flexible, intending it is not too much opinionated. It adds enough abstraction to hide boring details and not too much bells and whistles to hide the platform.
 
-Before thinking there is something wrong in the framework, check the docs (RTFM) and the issues - they are a very worthy reading - and try to discover (again) the original specs (DOM) behind the framework. I need to shift my mind to be used to hyperHTML. Then you can see the beauty and the elegance of your app.
+Before thinking there is something wrong in the framework, check the docs (RTFM) and the issues - they are a very worthy reading - and try to discover (again) the original specs (DOM) behind the framework. I need to shift my mind to be used to hyperHTML.
 
 ## Table of Contents
 
@@ -87,7 +87,7 @@ RootComponent.bootstrap();
 
 A Component module is the container reference for all reusable components. See above how we import `components.module.js` and inject them into the Root module, this gives us a single place to import all components for the app. 
 
-These modules we require are almost decoupled from all other modules and thus can be moved into any other application with ease. Eventually there is an explicit dependency between the modules, because there is not a dependency injection system. 
+These modules we require are almost decoupled from all other modules and thus can be moved into any other application with ease. Finally there is an explicit dependency between the modules, because there is not a dependency injection system. 
 
 ```js
 // components.module.js
@@ -184,7 +184,7 @@ File structure is extremely important, this describes a scalable and predictable
 └── index.html
 ```
 
-The rationale behind this structure is a separation based on feature (folders-by-feature) and not on file type (folder-by-type).
+The rationale behind this structure is a separation based on feature (folders-by-feature) and not on file type (folders-by-type).
 
 The high level folder structure simply contains `index.html` and `app/`, a directory in which all our root, component, common and low-level modules live along with the markup and styles for each component.
 
@@ -197,10 +197,6 @@ The high level folder structure simply contains `index.html` and `app/`, a direc
 Components are essentially templates with a controller. 
 
 The component is bootstrapped in the module file.
-
-#### Note
-
-There are different approaches how to create a `component`, described in the docs, and based on `hyper.Component` and `HyperHTMLElement`.
 
 ```js
 // assets.module.js
@@ -232,6 +228,10 @@ export class AssetsComponent {
 ```
 
 Generally speaking, the component interface contains only the `bootstrap` api, but when the component is updated from another one, there is also an `update` api, eventually passing the new state.
+
+#### Note
+
+There are different approaches how to create a `component`, described in the docs, and based on `hyper.Component` and `HyperHTMLElement`. This topic would deserve a complete dedicated section.
 
 **[Back to top](#table-of-contents)**
 
@@ -333,9 +333,13 @@ export class AssetsTemplate {
 }
 ```
 
-The css classes are embedded in the template.
+The css classes are embedded in the template, a literal template, with `wire` partials.
 
-Notice `id="${`asset-${asset.symbol}`}" onclick="${e => events(e, asset)}"`.
+#### Note
+
+Notice `id="${`asset-${asset.symbol}`}" onclick="${e => events(e, asset)}"`. 
+
+It allows, via helpers defined in `Util`, to use `onAssetClick` handler (in `events`) and to pass a payload `asset`.
 
 **[Back to top](#table-of-contents)**
 
@@ -449,11 +453,13 @@ AssetsService.assets = JSON.parse(localStorage.getItem(CONPA_ASSETS)) || [];
 
 #### Note
 
-Here, in this service, there is `workway` approach.
+Here, in this service, there is an example of `workway` approach: it is a general purpose, Web Worker driven, remote namespace with classes and methods.
 
 **[Back to top](#table-of-contents)**
 
 # Utils
+
+The following utilities allow to improve the error handling and, finally, to generalize the event handling for different targets.
 
 ```js
 // utils.js
@@ -475,6 +481,8 @@ export class Util {
     }
 }
 ```
+
+See the `Controllers` section above for the usage.
 
 **[Back to top](#table-of-contents)**
 
