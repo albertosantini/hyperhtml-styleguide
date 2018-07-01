@@ -337,9 +337,13 @@ The css classes are embedded in the template, a literal template, with `wire` pa
 
 #### Note
 
-Notice `id="${`asset-${asset.symbol}`}" onclick="${e => events(e, asset)}"`. 
+```js
+id="${`asset-${asset.symbol}`}" onclick="${e => events(e, asset)}"
+``` 
 
-It allows, via helpers defined in `Util`, to use `onAssetClick` handler (in `events`) and to pass a payload `asset`.
+- Be aware partial attributes are not allowed.
+- The event handler is automagically `onAssetClick` due to `Util.handleEvent`.
+- `asset` is the payload of the event handler.
 
 **[Back to top](#table-of-contents)**
 
