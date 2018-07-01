@@ -272,9 +272,26 @@ export class AssetsController {
 
 ```
 
-So `render` and `templates` are passed by the component instance.
+So `render` and `templates` are passed by the component instance. The controller passes `events` and `state` to the template.
 
-The controller adds `events` and `state`, available in the template.
+You may use an observer pattern, intending to update automagically the template, when the state is modified.
+
+```js
+export class ActivityController {
+    constructor(render, template) {
+
+        this.state = Introspected({
+            activities: []
+        }, state => template.update(render, state));
+
+        this.activityService = new ActivityService(this.state.activities);
+    }
+}
+```
+
+If you use a third party lib (for instance `Introspected`), watching an object or array for changes, the state (or a slice of the state) is passed to the service. Finally, when the componenent (or other ones) change the properties in the model, using the service methods, the template is update.
+
+Stretching a bit further this approach, you may use a state container.
 
 **[Back to top](#table-of-contents)**
 
