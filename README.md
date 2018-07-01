@@ -277,6 +277,7 @@ So `render` and `templates` are passed by the component instance. The controller
 You may use an observer pattern, intending to update automagically the template, when the state is modified.
 
 ```js
+// activity.controller.js
 export class ActivityController {
     constructor(render, template) {
 
