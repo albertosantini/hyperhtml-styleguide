@@ -539,4 +539,8 @@ Open an issue first to discuss potential changes/additions.
 * [@toddmotto](//twitter.com/toddmotto) for the original styleguide ([AngularJS styleguide](//github.com/toddmotto/angularjs-styleguide), a masterpiece) and for the great posts on AngularJS.
 * [@john_papa](//twitter.com/john_papa) for the first styleguide ([Angular 1 Style Guide](https://github.com/johnpapa/angular-styleguide/tree/master/a1)) I read how to structure a web application.
 
+<a href="//js.org" target="_blank" title="JS.ORG | JavaScript Community" class="pull-right">
+<img src="//logo.js.org/dark_horz.png" width="102" alt="JS.ORG Logo"/></a>
+<!-- alternatives [bright|dark]_[horz|vert|tiny].png (width[horz:102,vert:50,tiny:77]) -->
+
 **[Back to top](#table-of-contents)**
