@@ -290,7 +290,7 @@ export class ActivityController {
 }
 ```
 
-If you use a third party lib (for instance `Introspected`), watching an object or array for changes, the state (or a slice of the state) is passed to the service. Finally, when the componenent (or other ones) change the properties in the model, using the service methods, the template is update.
+If you use a third party lib (for instance `Introspected`), watching an object or array for changes, the state (or a slice of the state) is passed to the service. Finally, when the component (or other ones) change the properties in the model, using the service methods, the template is update.
 
 Stretching a bit further this approach, you may use a state container.
 
