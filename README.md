@@ -507,7 +507,41 @@ export class Util {
 }
 ```
 
-See the `Controllers` section above for the usage.
+`query` wraps `document.querySelector` and logs an error if it is not found the tag element, generally speaking because we forgot to add it to the markup or due to a typo. Also it helps to identify bootstrapping order errors, intending a component is bootstrapped before its tag is added to the DOM, like a child before its parent, because the selector contains the parent reference.
+
+`handleEvent()` method is called by the user agent when an event is sent to the EventListener, in order to handle events that occur on an observed EventTarget.
+
+In the controller `events` is defined and it is passed to the template.
+
+```js
+// foo.controller.js
+this.events = (e, payload) => Util.handleEvent(this, e, payload);
+...
+this.template.update(this.render, this.state, this.events);
+
+```
+
+So `events` can be used in the template with or without a payload.
+
+```js
+// foo.template.js
+<input id="assetsSearch" oninput="${events}" ...
+...
+<td id="${id}" onclick="${e => events(e, asset)}" ...
+
+```
+
+Any tag with an event listener needs an `id` and logs an error if it is not found, because the name of the controller method is based on the id name and the type of the event handler, following these rules:
+
+- `on` adds a prefix.
+- `id[0].toUpperCase()` gets the first character of id and converts to uppercase.
+- `id.split("-")[0].slice(1)` splits the id, finally based on `-`, gets the first part and removes the first character. This trick is a useful when you have a list of tags and the event listener is the same. Generally speaking, inside the method you have some logic based on the event target or, better, you passed different payloads.
+- `${type[0].toUpperCase()` gets the first character of the event listener type and converts to uppercase.
+- `type.slice(1)` gets the rest of the event listener type.
+
+For an `input` element with id `assetsSearch`, the method called is `onAssetsSearchInput`.
+
+For a `td` element with id `asset-IBM` and click event, the method called is `onAssetClick`.
 
 **[Back to top](#table-of-contents)**
 
