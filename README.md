@@ -37,7 +37,7 @@ Before thinking there is something wrong in the framework, check the docs (RTFM)
 1. [Contributing](#contributing)
 1. [Credits](#credits)
 
-# Modular architecture
+## Modular architecture
 
 A module component is the root definition for that module that encapsulates the component boostrap, the logic, controller, template, services and, finally, child components.
 
@@ -190,7 +190,7 @@ The high level folder structure simply contains `index.html` and `app/`, a direc
 
 **[Back to top](#table-of-contents)**
 
-# Components
+## Components
 
 ### Component theory
 
@@ -482,7 +482,7 @@ Here, in this service, there is an example of `workway` approach: it is a genera
 
 **[Back to top](#table-of-contents)**
 
-# Utils
+## Utils
 
 The following utilities allow to improve the error handling and, finally, to generalize the event handling for different targets.
 
@@ -511,32 +511,32 @@ See the `Controllers` section above for the usage.
 
 **[Back to top](#table-of-contents)**
 
-# Made with hyperHTML
+## Made with hyperHTML
 
 * [Argo](//github.com/albertosantini/argo), a forex trading platform.
 * [ConPA](//github.com/albertosantini/node-conpa), an asset allocation app. 
 
 **[Back to top](#table-of-contents)**
 
-# Resources
+## Resources
 
 * [Patterns For Large-Scale JavaScript Application Architecture](//addyosmani.com/largescalejavascript/)
 * [Web technology For developers](//developer.mozilla.org/en-US/docs/Web/JavaScript)
 
 **[Back to top](#table-of-contents)**
 
-# Documentation
+## Documentation
 For anything else, including API reference, check the [hyperHTML documentation](//viperhtml.js.org/hyperhtml/documentation/).
 
 **[Back to top](#table-of-contents)**
 
-# Contributing
+## Contributing
 
 Open an issue first to discuss potential changes/additions.
 
 **[Back to top](#table-of-contents)**
 
-# Credits
+## Credits
 
 * [@WebReflection](//twitter.com/webreflection) for creating hyperHTML.
 * [@toddmotto](//twitter.com/toddmotto) for the original styleguide ([AngularJS styleguide](//github.com/toddmotto/angularjs-styleguide), a masterpiece) and for the great posts on AngularJS.
