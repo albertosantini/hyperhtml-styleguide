@@ -31,6 +31,8 @@ Before thinking there is something wrong in the framework, check the docs (RTFM)
     1. [Templates](#templates)
     1. [Services](#services)
 1. [Utils](#utils)
+1. [How To](#howto)
+    1. [A Modal Dialog](#a-modal-dialog)
 1. [Made with hyperHTML](#made-with-hyperhtml)
 1. [Resources](#resources)
 1. [Documentation](#documentation)
@@ -542,6 +544,184 @@ Any tag with an event listener needs an `id` and logs an error if it is not foun
 For an `input` element with id `assetsSearch`, the method called is `onAssetsSearchInput`.
 
 For a `td` element with id `asset-IBM` and click event, the method called is `onAssetClick`.
+
+**[Back to top](#table-of-contents)**
+
+## How To
+
+The examples show how to follow the styleguide applied to a few concrete use cases.
+
+### A Modal Dialog
+
+[Live example](https://codepen.io/anon/pen/MBYPVg?editors=0010#0).
+
+There is a generic parent component `foo`, opening a very simple modal dialog, `bar`.
+
+```html
+    <foo></foo>
+    <bar-dialog></bar-dialog>
+```
+
+In the page there are the tags for the component and for the dialog.
+
+```js
+// foo.component.js
+class FooComponent {
+    static bootstrap() {
+        const render = hyperHTML.bind(Util.query("foo"));
+
+        this.fooController = new FooController(render, FooTemplate);
+    }
+}
+
+FooComponent.bootstrap();
+```
+
+The controller contains not only the state of the component, but also the state of the dialog, `this.state.barModal`. Eventually two event handlers are implemented in the controller, `onOpenBarModalFromFooClick` and `onCloseBarModalClick`. 
+
+The `events` of the controller and `this.state.barModal` is passed to the modal component, becoming its `state`.
+
+```js
+// foo.controller.js
+class FooController {
+    constructor(render, template) {
+        this.render = render;
+        this.template = template;
+        this.events = (e, payload) => Util.handleEvent(this, e, payload);
+        this.state = {
+            barModal: {
+                isOpen: false,
+                headerName: "Bar Modal from Foo",
+                answer: ""
+            }
+        };
+
+        this.update();
+
+        this.barModalComponent = new BarModalComponent(this.state.barModal, this.events);
+    }
+
+    update() {
+        this.template.update(this.render, this.state, this.events);
+    }
+
+    displayModalAnswer(text) {
+        this.state.barModal.answer = text;
+        this.update();
+        setTimeout(() => {
+            this.state.barModal.answer = "";
+            this.update();
+        }, 2000);
+    }
+
+    onOpenBarModalFromFooClick() {
+        this.state.barModal.isOpen = true;
+        this.update();
+        this.barModalComponent.update();
+    }
+
+    onCloseBarModalClick(e, res) {
+        this.displayModalAnswer(res.answer);
+        this.barModalComponent.update();
+        this.update();
+    }
+}
+```
+
+The modal component is bootstrapped with `new BarModalComponent(...)` and not with the usual `bootstrap` api, because we may have more instances of the dialog.
+
+```js
+// foo.template.js
+class FooTemplate {
+    static update(render, state, events) {
+        render`
+            <button id="openBarModalFromFoo" type="button" onclick="${events}">
+                Open Bar Dialog from Foo
+            </button>
+
+            <p>${state.barModal.answer}</p>
+        `;
+    }
+}
+```
+
+The modal component, as said, is not a singleton and, apart the usual `render` and `template` parameters, are passed also `state` and `events` ones, objects corresponding to the controller of the parent: they are useful to communicate with the parent.
+
+```js
+// bar-modal.component.js
+class BarModalComponent {
+    constructor(state, events) {
+        const render = hyperHTML.bind(Util.query("bar-dialog"));
+
+        this.barModalController = new BarModalController(render, 
+            BarModalTemplate, state, events);
+    }
+
+    update() {
+        this.barModalController.update();
+    }
+}
+```
+
+The controller of the modal is only here as a pass-through to the template.
+
+```js
+// bar-modal.controller.js
+class BarModalController {
+    constructor(render, template, state, events) {
+        this.render = render;
+        this.template = template;
+        this.state = state;
+        this.events = events;
+
+        this.update();
+    }
+
+    update() {
+        this.template.update(this.render, this.state, this.events);
+    }
+}
+```
+
+```js
+// bar-modal.template.js
+class BarModalTemplate {
+    static update(render, state, events) {
+        if (!state.isOpen) {
+            render``;
+
+            return;
+        }
+
+        /* eslint-disable indent */
+        render`
+            <div class="fixed absolute--fill bg-black-70 z5">
+            <div class="fixed absolute-center z999">
+
+            <main class="pa4 black-80 bg-white">
+                <form class="measure center">
+                    <fieldset class="ba b--transparent ph0 mh0">
+                        <legend class="f4 fw6 ph0 mh0 center">${state.headerName}</legend>
+                    </fieldset>
+
+                    <div class="flex flex-row items-center justify-around">
+                        <button id="closeBarModal" type="button"
+                            onclick="${e => {
+                                state.isOpen = false;
+                                events(e, { answer: state.headerName });
+                            }}">Close Bar Dialog
+                        </button>
+                    </div>
+                </form>
+            </main>
+
+            </div>
+            </div>
+        `;
+        /* eslint-enable indent */
+    }
+}
+```
 
 **[Back to top](#table-of-contents)**
 
