@@ -555,7 +555,7 @@ The examples show how to follow the styleguide applied to a few concrete use cas
 
 [Live example](https://codepen.io/anon/pen/MBYPVg?editors=0010#0).
 
-There is a generic parent component `foo`, opening a very simple modal dialog, `bar`.
+There is a generic component `foo`, opening a very simple modal dialog, `bar`.
 
 ```html
     <foo></foo>
