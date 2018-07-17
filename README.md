@@ -2,7 +2,7 @@
 
 *Abstraction is the price you pay for the magic.*
 
-hyperHTML is a DOM & ECMAScript standard compliant, zero-dependency, fully cross platform library suitable for declarative and reactive Web Applications. 
+[hyperHTML](https://github.com/WebReflection/hyperhtml/) is a DOM & ECMAScript standard compliant, zero-dependency, fully cross platform library suitable for declarative and reactive Web Applications. 
 
 This architecture and styleguide has been written for showing best practices about hyperHTML in my use cases and context, mainly in ES2015 without any transpiling step (and finally without any bundling one).
 
