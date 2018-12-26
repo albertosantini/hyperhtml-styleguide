@@ -736,6 +736,7 @@ class BarModalTemplate {
 
 * [Patterns For Large-Scale JavaScript Application Architecture](//addyosmani.com/largescalejavascript/)
 * [Web technology For developers](//developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [Easy apps with hyperHTML](https://medium.com/easy-apps-with-hyperhtml/easy-apps-with-hyperhtml-1-4a56acad9327)
 
 **[Back to top](#table-of-contents)**
 
