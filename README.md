@@ -502,9 +502,10 @@ export class Util {
         const method = `on${id[0].toUpperCase()}${id.split("-")[0].slice(1)}` +
             `${type[0].toUpperCase()}${type.slice(1)}`;
 
+        const fn = (method in context && context[method]) ||
+            (method in context.constructor && context.constructor[method]);
 
-        return method in context ? context[method](e, payload)
-            : console.warn(method, "not implemented");
+        return fn ? fn(e, payload) : console.warn(method, "not implemented");
     }
 }
 ```
